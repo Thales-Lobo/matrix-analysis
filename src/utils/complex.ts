@@ -23,12 +23,22 @@ export class Complex {
             return new Complex(0, imaginaryPart);
         }
 
-        // Handle full complex numbers with flexible spacing around the operator
+        // Handle full complex numbers with flexible spacing around + or -
         const regex = /^([-+]?\d*\.?\d*)\s*([-+])\s*(\d*\.?\d*)[ij]$/;
         const match = input.match(regex);
 
         if (!match) {
-            throw new Error("Invalid complex number format.");
+            throw new Error(`Invalid complex number format. 
+            Expected formats include:
+            - a + bi (e.g., 3 + 4i)
+            - a - bi (e.g., 5 - 6i)
+            - a (pure real number, e.g., 7)
+            - bi (pure imaginary number, e.g., 8i)
+
+            Received: "${input}"
+
+            Make sure there are no extra characters or spacing issues. 
+            Example of valid input: "3 + 4i", "5 - 6i", "7", "8i"`);
         }
 
         const realPart = match[1] ? parseFloat(match[1]) : 0;
