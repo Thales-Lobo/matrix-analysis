@@ -4,22 +4,36 @@ export class Complex {
     real: number;
     imaginary: number;
 
-    constructor(real: number, imaginary: number) {
+    constructor(real: number = 0, imaginary: number = 0) {
         this.real = real;
         this.imaginary = imaginary;
     }
 
     static fromString(input: string): Complex {
-        const regex = /([-+]?\d*\.?\d+)\s*([-+])\s*(\d*\.?\d+)[ij]/;
+        input = input.trim();
+
+        // Handle pure real numbers
+        if (/^-?\d*\.?\d+$/.test(input)) {
+            return new Complex(parseFloat(input), 0);
+        }
+
+        // Handle pure imaginary numbers
+        if (/^-?\d*\.?\d*[ij]$/.test(input)) {
+            const imaginaryPart = parseFloat(input.replace(/[ij]/, ''));
+            return new Complex(0, imaginaryPart);
+        }
+
+        // Handle full complex numbers with flexible spacing around the operator
+        const regex = /^([-+]?\d*\.?\d*)\s*([-+])\s*(\d*\.?\d*)[ij]$/;
         const match = input.match(regex);
 
         if (!match) {
             throw new Error("Invalid complex number format.");
         }
 
-        const realPart = parseFloat(match[1]);
+        const realPart = match[1] ? parseFloat(match[1]) : 0;
         const sign = match[2];
-        const imaginaryPart = parseFloat(match[3]) * (sign === "-" ? -1 : 1);
+        const imaginaryPart = match[3] ? parseFloat(match[3]) * (sign === "-" ? -1 : 1) : 0;
 
         return new Complex(realPart, imaginaryPart);
     }
