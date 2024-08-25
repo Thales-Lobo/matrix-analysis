@@ -10,18 +10,33 @@ interface MatrixOperationsProps {
 }
 
 const MatrixOperations: React.FC<MatrixOperationsProps> = ({ matrixA, matrixB }) => {
-    const [resultMatrix, setResultMatrix] = useState<Complex[][]>([]);
+    const [resultMatrix, setResultMatrix] = useState<Complex[][] | null>(null);
 
     const handleAddition = () => {
-        setResultMatrix(addMatrices(matrixA, matrixB));
+        if (matrixA.length > 0 && matrixB.length > 0) {
+            setResultMatrix(addMatrices(matrixA, matrixB));
+            console.log("Matrix A:", matrixA);
+            console.log("Matrix B:", matrixB);
+            console.log("Result Matrix:", resultMatrix);
+        }
     };
 
     const handleSubtraction = () => {
-        setResultMatrix(subtractMatrices(matrixA, matrixB));
+        if (matrixA.length > 0 && matrixB.length > 0) {
+            setResultMatrix(subtractMatrices(matrixA, matrixB));
+            console.log("Matrix A:", matrixA);
+            console.log("Matrix B:", matrixB);
+            console.log("Result Matrix:", resultMatrix);
+        }
     };
 
     const handleMultiplication = () => {
-        setResultMatrix(multiplyMatrices(matrixA, matrixB));
+        if (matrixA.length > 0 && matrixB.length > 0) {
+            setResultMatrix(multiplyMatrices(matrixA, matrixB));
+            console.log("Matrix A:", matrixA);
+            console.log("Matrix B:", matrixB);
+            console.log("Result Matrix:", resultMatrix);
+        }
     };
 
     return (
@@ -33,7 +48,7 @@ const MatrixOperations: React.FC<MatrixOperationsProps> = ({ matrixA, matrixB })
             </div>
             <div>
                 <h2>Result Matrix</h2>
-                {resultMatrix.length > 0 && resultMatrix.map((row, i) => (
+                {resultMatrix && resultMatrix.map((row, i) => (
                     <div key={i}>
                         {row.map((val, j) => (
                             <span key={j}>{val.toString()} </span>
